@@ -1,16 +1,39 @@
-# React + Vite
+# DevAgora Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+DevAgora is a developer networking platform where developers can connect, collaborate, and build meaningful professional relationships.
 
-Currently, two official plugins are available:
+This repository contains the **frontend** of DevAgora.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+Overview
+DevAgora enables developers to discover, connect, and engage with like-minded individuals through an intuitive and interactive experience. Inspired by swipe-based discovery, the platform focuses on professional networking rather than casual interaction.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React.js
+- Tailwind CSS / CSS Modules
+- JWT Authentication
+
+---
+
+## Backend Repository
+
+Make sure backend is running: https://github.com/forgewithharsh/dev-agora
+
+## Project Goal
+
+To build a high-quality developer ecosystem where individuals can connect, share knowledge, and collaborate on meaningful projects.
+
+
+## 🙏 Acknowledgement
+
+Grateful to Akshay Saini Sir for the guidance and insights through the Namaste Node.js series.
+
+---
+
+> DevAgora — A space where developers connect, discuss, and build together.
+
+
