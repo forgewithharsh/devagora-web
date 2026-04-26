@@ -6,7 +6,7 @@ This repository contains the **frontend** of DevAgora.
 
 ---
 
-Overview
+## Overview
 DevAgora enables developers to discover, connect, and engage with like-minded individuals through an intuitive and interactive experience. Inspired by swipe-based discovery, the platform focuses on professional networking rather than casual interaction.
 
 ---
