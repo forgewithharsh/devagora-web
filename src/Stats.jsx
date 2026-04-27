@@ -1,10 +1,10 @@
 // Stats.jsx
 
 const STATS = [
-  { num: "12", suffix: "k+", label: "Active Builders" },
-  { num: "4", suffix: ".2k", label: "Projects Shipped" },
+  { num: "1", suffix: "+", label: "Active Builders" },
+  { num: "1", suffix: "", label: "Projects Shipped" },
   { num: "98", suffix: "%", label: "Match Quality" },
-  { num: "30", suffix: "+", label: "Tech Hubs" },
+  { num: "1", suffix: "+", label: "Tech Hubs" },
 ];
 
 export default function Stats() {

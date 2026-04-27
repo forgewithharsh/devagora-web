@@ -209,7 +209,11 @@ nav.navbar {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: var(--hero-rad);
+  background: radial-gradient(
+    ellipse 75% 60% at 50% 0%,
+    rgba(var(--accent-rgb), 0.12),
+    transparent 70%
+  );
 }
 .hero-badge {
   display: inline-flex;
@@ -980,5 +984,344 @@ footer.footer {
   .stat {
     border-right: none;
     border-bottom: 1px solid var(--border);
+  }
+}
+
+/* ─── CANVAS METEOR BG ───────────────────────────────────────── */
+.auth-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* Canvas draws stars in dark mode colors —
+     in light mode we dim it with an overlay below */
+}
+
+/* ─── PAGE SHELL ─────────────────────────────────────────────── */
+.auth-page {
+  min-height: 100vh;
+  background: var(--bg);
+  position: relative;
+  transition: background 0.35s;
+}
+
+/* Centered layout for both Login and Signup */
+.auth-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 66px 20px 28px;
+}
+
+/* Light mode: dim the canvas so dots aren't too harsh */
+[data-theme="light"] .auth-canvas {
+  opacity: 0.25;
+}
+
+/* Light mode: add a warm overlay tint */
+[data-theme="light"] .auth-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 30%,
+    rgba(201, 94, 18, 0.06) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── BACK BUTTON ────────────────────────────────────────────── */
+.auth-back {
+  position: fixed;
+  top: 20px;
+  left: 24px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text2);
+  background: var(--card2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    background 0.15s;
+}
+.auth-back:hover {
+  color: var(--text);
+  background: var(--bg3);
+}
+
+/* ─── CARD ───────────────────────────────────────────────────── */
+.auth-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 540px;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 24px;
+  padding: 44px 44px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  /* Subtle glow matching accent */
+  box-shadow:
+    0 0 0 1px var(--border),
+    0 24px 64px rgba(0, 0, 0, 0.45),
+    0 0 80px rgba(var(--accent-rgb), 0.06);
+}
+
+.signup-card {
+  max-width: 600px;
+}
+
+/* ─── LOGO INSIDE CARD ───────────────────────────────────────── */
+.auth-logo {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: -8px;
+}
+.auth-logo span {
+  color: var(--accent);
+}
+
+/* ─── HEADINGS ───────────────────────────────────────────────── */
+.auth-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.auth-title {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: var(--text);
+}
+.auth-sub {
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* ─── GOOGLE BUTTON ──────────────────────────────────────────── */
+.btn-google {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 24px;
+  border-radius: 14px;
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  cursor: pointer;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition:
+    opacity 0.15s,
+    transform 0.15s;
+}
+.btn-google:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* ─── DIVIDER ────────────────────────────────────────────────── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.auth-divider span {
+  flex: 1;
+  height: 1px;
+  background: var(--border2);
+}
+.auth-divider p {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  flex-shrink: 0;
+}
+
+/* ─── FORM ───────────────────────────────────────────────────── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text2);
+  cursor: default;
+  user-select: none;
+}
+.field-label svg {
+  color: var(--text3);
+  flex-shrink: 0;
+}
+
+/* Inputs & Selects */
+.field-input {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.field-input::placeholder {
+  color: var(--text3);
+}
+.field-input:focus {
+  border-color: rgba(var(--accent-rgb), 0.5);
+  background: var(--card2);
+}
+
+/* Select arrow */
+.field-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  padding-right: 44px;
+  cursor: pointer;
+}
+.field-select option {
+  background: var(--bg2);
+  color: var(--text);
+}
+
+/* Password eye */
+.input-wrap {
+  position: relative;
+}
+.input-wrap .field-input {
+  padding-right: 48px;
+}
+.eye-btn {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  transition: color 0.15s;
+}
+.eye-btn:hover {
+  color: var(--text2);
+}
+
+/* ─── SUBMIT ─────────────────────────────────────────────────── */
+.btn-submit {
+  width: 100%;
+  padding: 17px 24px;
+  border-radius: 14px;
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  cursor: pointer;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  transition:
+    opacity 0.15s,
+    transform 0.15s;
+  margin-top: 4px;
+}
+.btn-submit:hover {
+  opacity: 0.87;
+  transform: translateY(-1px);
+}
+
+/* ─── FOOTER TEXT ────────────────────────────────────────────── */
+.auth-footer {
+  text-align: center;
+  font-size: 14.5px;
+  color: var(--text2);
+  margin-top: -4px;
+}
+.auth-link {
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.auth-link:hover {
+  color: var(--accent);
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .auth-card,
+  .signup-card {
+    padding: 32px 22px;
+    border-radius: 20px;
+  }
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+  .auth-title {
+    font-size: 24px;
+  }
+  .field-input {
+    font-size: 14px;
+    padding: 14px 16px;
+  }
+  .btn-google,
+  .btn-submit {
+    font-size: 15px;
+    padding: 15px 20px;
   }
 }

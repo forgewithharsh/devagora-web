@@ -1,4 +1,4 @@
-// Login.jsx
+// Signup.jsx
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -18,7 +18,6 @@ function MeteorBg() {
     resize();
     window.addEventListener("resize", resize);
 
-    // Dots / stars
     const dots = Array.from({ length: 120 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
@@ -27,7 +26,6 @@ function MeteorBg() {
       pulse: Math.random() * Math.PI * 2,
     }));
 
-    // Meteors
     const makeMeteor = () => ({
       x: Math.random() * canvas.width * 1.5,
       y: -20,
@@ -41,12 +39,9 @@ function MeteorBg() {
 
     const meteors = Array.from({ length: 6 }, makeMeteor);
 
-    let frame = 0;
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      frame++;
 
-      // Draw dots
       dots.forEach((d) => {
         d.pulse += 0.02;
         const opacity = d.o + Math.sin(d.pulse) * 0.15;
@@ -56,33 +51,24 @@ function MeteorBg() {
         ctx.fill();
       });
 
-      // Draw meteors
       meteors.forEach((m, i) => {
         m.life += m.speed;
         const dx = Math.cos(m.angle) * m.life;
         const dy = Math.sin(m.angle) * m.life;
-
         const grad = ctx.createLinearGradient(
           m.x + dx - Math.cos(m.angle) * m.len,
           m.y + dy - Math.sin(m.angle) * m.len,
-          m.x + dx,
-          m.y + dy
+          m.x + dx, m.y + dy
         );
         grad.addColorStop(0, `rgba(232,135,74,0)`);
         grad.addColorStop(0.6, `rgba(232,135,74,${m.alpha * 0.4})`);
         grad.addColorStop(1, `rgba(242,237,232,${m.alpha})`);
-
         ctx.beginPath();
-        ctx.moveTo(
-          m.x + dx - Math.cos(m.angle) * m.len,
-          m.y + dy - Math.sin(m.angle) * m.len
-        );
+        ctx.moveTo(m.x + dx - Math.cos(m.angle) * m.len, m.y + dy - Math.sin(m.angle) * m.len);
         ctx.lineTo(m.x + dx, m.y + dy);
         ctx.strokeStyle = grad;
         ctx.lineWidth = m.width;
         ctx.stroke();
-
-        // Reset when off screen
         if (m.x + dx > canvas.width + 100 || m.y + dy > canvas.height + 100) {
           meteors[i] = { ...makeMeteor(), x: Math.random() * canvas.width };
         }
@@ -101,10 +87,13 @@ function MeteorBg() {
   return <canvas ref={canvasRef} className="auth-canvas" />;
 }
 
-/* ── Login Component ────────────────────────────────────────── */
-export default function Login() {
+/* ── Signup Component ───────────────────────────────────────── */
+export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({
+    firstName: "", lastName: "", email: "",
+    password: "", gender: "", educationYear: "",
+  });
   const navigate = useNavigate();
 
   const handleChange = (e) =>
@@ -112,7 +101,7 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login →", form);
+    console.log("Signup →", form);
     // navigate("/dashboard");
   };
 
@@ -120,7 +109,7 @@ export default function Login() {
     <div className="auth-page auth-centered">
       <MeteorBg />
 
-      {/* Back to home */}
+      {/* Back */}
       <button className="auth-back" onClick={() => navigate("/")}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -129,44 +118,48 @@ export default function Login() {
         Back
       </button>
 
-      <div className="auth-card">
+      <div className="auth-card signup-card">
         {/* Logo */}
         <div className="auth-logo" onClick={() => navigate("/")}>
           Dev<span>Agora</span>
         </div>
 
-        {/* Heading */}
-        <div className="auth-heading">
-          <h1 className="auth-title">Get Started Now</h1>
-          <p className="auth-sub">Enter your credentials to access your account</p>
-        </div>
+        <h1 className="auth-title" style={{ textAlign: "center", marginBottom: 8 }}>
+          Join DevAgora
+        </h1>
 
-        {/* Google */}
-        <button className="btn-google" type="button">
-          <GoogleIcon />
-          Login with Google
-        </button>
-
-        {/* Divider */}
-        <div className="auth-divider">
-          <span /><p>OR</p><span />
-        </div>
-
-        {/* Form */}
         <form className="auth-form" onSubmit={handleSubmit}>
+          {/* First + Last */}
+          <div className="field-row">
+            <div className="field-group">
+              <label className="field-label"><UserIcon /> First Name</label>
+              <input className="field-input" type="text" name="firstName"
+                placeholder="First Name" value={form.firstName}
+                onChange={handleChange} required />
+            </div>
+            <div className="field-group">
+              <label className="field-label"><UserIcon /> Last Name</label>
+              <input className="field-input" type="text" name="lastName"
+                placeholder="Last Name" value={form.lastName}
+                onChange={handleChange} required />
+            </div>
+          </div>
+
+          {/* Email */}
           <div className="field-group">
-            <label className="field-label"><MailIcon /> Email Address</label>
+            <label className="field-label"><MailIcon /> Email</label>
             <input className="field-input" type="email" name="email"
-              placeholder="Enter your email" value={form.email}
+              placeholder="Email" value={form.email}
               onChange={handleChange} required />
           </div>
 
+          {/* Password */}
           <div className="field-group">
             <label className="field-label"><LockIcon /> Password</label>
             <div className="input-wrap">
               <input className="field-input" name="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="Enter your password" value={form.password}
+                placeholder="Password" value={form.password}
                 onChange={handleChange} required />
               <button type="button" className="eye-btn"
                 onClick={() => setShowPassword((p) => !p)}>
@@ -175,12 +168,40 @@ export default function Login() {
             </div>
           </div>
 
-          <button className="btn-submit" type="submit">Login</button>
+          {/* Gender */}
+          <div className="field-group">
+            <label className="field-label"><UserIcon /> Gender</label>
+            <select className="field-input field-select" name="gender"
+              value={form.gender} onChange={handleChange} required>
+              <option value="" disabled>Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="non-binary">Non-binary</option>
+              <option value="prefer-not">Prefer not to say</option>
+            </select>
+          </div>
+
+          {/* Education Year */}
+          <div className="field-group">
+            <label className="field-label"><GraduationIcon /> Education Year</label>
+            <select className="field-input field-select" name="educationYear"
+              value={form.educationYear} onChange={handleChange} required>
+              <option value="" disabled>Select Education Year</option>
+              <option value="1">1st Year</option>
+              <option value="2">2nd Year</option>
+              <option value="3">3rd Year</option>
+              <option value="4">4th Year</option>
+              <option value="grad">Graduate</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <button className="btn-submit" type="submit">Sign Up</button>
         </form>
 
         <p className="auth-footer">
-          Don't have an account?{" "}
-          <Link to="/signup" className="auth-link">Sign up</Link>
+          Already have an account?{" "}
+          <Link to="/login" className="auth-link">Login</Link>
         </p>
       </div>
     </div>
@@ -188,21 +209,17 @@ export default function Login() {
 }
 
 /* ── Icons ─────────────────────────────────────────────────── */
-function GoogleIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 48 48">
-      <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.7 2.2 30.2 0 24 0 14.7 0 6.7 5.4 2.8 13.3l7.9 6.1C12.6 13 17.9 9.5 24 9.5z"/>
-      <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.5 2.8-2.1 5.1-4.5 6.7l7 5.4C43.3 37 46.5 31.2 46.5 24.5z"/>
-      <path fill="#FBBC05" d="M10.7 28.6A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.2.8-4.6L2.4 13.3A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.8 10.7l7.9-6.1z"/>
-      <path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7-5.4c-2.1 1.4-4.8 2.3-8.2 2.3-6.1 0-11.4-3.5-13.3-8.8l-7.9 6.1C6.7 42.6 14.7 48 24 48z"/>
-    </svg>
-  );
+function UserIcon() {
+  return <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
 }
 function MailIcon() {
   return <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>;
 }
 function LockIcon() {
   return <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
+}
+function GraduationIcon() {
+  return <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>;
 }
 function EyeIcon() {
   return <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>;
