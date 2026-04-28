@@ -1,6 +1,7 @@
 // Login.jsx
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 /* ── Meteor canvas background ───────────────────────────────── */
 function MeteorBg() {
@@ -110,10 +111,22 @@ export default function Login() {
   const handleChange = (e) =>
     setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login →", form);
-    // navigate("/dashboard");
+    await handleLogin();
+  };
+
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post("http://localhost:7777/login", form, {
+        withCredentials: true,
+      });
+
+      console.log(res.data);
+      // navigate("/dashboard");
+    } catch (error) {
+      console.error(error.response?.data || error.message);
+    }
   };
 
   return (
