@@ -168,34 +168,6 @@ export default function Signup() {
             </div>
           </div>
 
-          {/* Gender */}
-          <div className="field-group">
-            <label className="field-label"><UserIcon /> Gender</label>
-            <select className="field-input field-select" name="gender"
-              value={form.gender} onChange={handleChange} required>
-              <option value="" disabled>Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="non-binary">Non-binary</option>
-              <option value="prefer-not">Prefer not to say</option>
-            </select>
-          </div>
-
-          {/* Education Year */}
-          <div className="field-group">
-            <label className="field-label"><GraduationIcon /> Education Year</label>
-            <select className="field-input field-select" name="educationYear"
-              value={form.educationYear} onChange={handleChange} required>
-              <option value="" disabled>Select Education Year</option>
-              <option value="1">1st Year</option>
-              <option value="2">2nd Year</option>
-              <option value="3">3rd Year</option>
-              <option value="4">4th Year</option>
-              <option value="grad">Graduate</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
           <button className="btn-submit" type="submit">Sign Up</button>
         </form>
 
