@@ -1,6 +1,6 @@
 // LandingPage.jsx
 import { useEffect } from "react";
-import Navbar from "./Navbar.jsx";
+import Navbar from "./NavBar.jsx";
 import Hero from "./Hero.jsx";
 import Stats from "./Stats.jsx";
 import Seamless from "./Seamless.jsx";
