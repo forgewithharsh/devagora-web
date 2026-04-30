@@ -1,111 +1,13 @@
 // Login.jsx
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import MeteorBg from "./MeteorBg.jsx";
 import axios from "axios";
-
-/* ── Meteor canvas background ───────────────────────────────── */
-function MeteorBg() {
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    let animId;
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    // Dots / stars
-    const dots = Array.from({ length: 120 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.5 + 0.3,
-      o: Math.random() * 0.5 + 0.1,
-      pulse: Math.random() * Math.PI * 2,
-    }));
-
-    // Meteors
-    const makeMeteor = () => ({
-      x: Math.random() * canvas.width * 1.5,
-      y: -20,
-      len: Math.random() * 120 + 60,
-      speed: Math.random() * 4 + 3,
-      angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3,
-      alpha: Math.random() * 0.6 + 0.3,
-      width: Math.random() * 1.5 + 0.5,
-      life: 0,
-    });
-
-    const meteors = Array.from({ length: 6 }, makeMeteor);
-
-    let frame = 0;
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      frame++;
-
-      // Draw dots
-      dots.forEach((d) => {
-        d.pulse += 0.02;
-        const opacity = d.o + Math.sin(d.pulse) * 0.15;
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(242,237,232,${Math.max(0, opacity)})`;
-        ctx.fill();
-      });
-
-      // Draw meteors
-      meteors.forEach((m, i) => {
-        m.life += m.speed;
-        const dx = Math.cos(m.angle) * m.life;
-        const dy = Math.sin(m.angle) * m.life;
-
-        const grad = ctx.createLinearGradient(
-          m.x + dx - Math.cos(m.angle) * m.len,
-          m.y + dy - Math.sin(m.angle) * m.len,
-          m.x + dx,
-          m.y + dy,
-        );
-        grad.addColorStop(0, `rgba(232,135,74,0)`);
-        grad.addColorStop(0.6, `rgba(232,135,74,${m.alpha * 0.4})`);
-        grad.addColorStop(1, `rgba(242,237,232,${m.alpha})`);
-
-        ctx.beginPath();
-        ctx.moveTo(
-          m.x + dx - Math.cos(m.angle) * m.len,
-          m.y + dy - Math.sin(m.angle) * m.len,
-        );
-        ctx.lineTo(m.x + dx, m.y + dy);
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = m.width;
-        ctx.stroke();
-
-        // Reset when off screen
-        if (m.x + dx > canvas.width + 100 || m.y + dy > canvas.height + 100) {
-          meteors[i] = { ...makeMeteor(), x: Math.random() * canvas.width };
-        }
-      });
-
-      animId = requestAnimationFrame(draw);
-    };
-
-    draw();
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="auth-canvas" />;
-}
 
 /* ── Login Component ────────────────────────────────────────── */
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ emailId: "", password: "" });
   const navigate = useNavigate();
 
   const handleChange = (e) =>
@@ -128,10 +30,11 @@ export default function Login() {
       console.error(error.response?.data || error.message);
     }
   };
+  const isDark = document.documentElement.classList.contains("dark");
 
   return (
     <div className="auth-page auth-centered">
-      <MeteorBg />
+      <MeteorBg theme={isDark ? "dark" : "light"} />
 
       {/* Back to home */}
       <button className="auth-back" onClick={() => navigate("/")}>
@@ -186,9 +89,9 @@ export default function Login() {
             <input
               className="field-input"
               type="email"
-              name="email"
+              name="emailId"
               placeholder="Enter your email"
-              value={form.email}
+              value={form.emailId}
               onChange={handleChange}
               required
             />
